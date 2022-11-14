@@ -2,7 +2,7 @@
 /dist
 /node_modules
 
-/src/config.js
+/src/config.ts
 
 # Logs
 logs
