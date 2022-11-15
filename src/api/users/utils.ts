@@ -2,45 +2,36 @@ import * as EmailValidator from 'email-validator';
 
 export const handleCreateUserError = (message: string): string => {
   let payload = '';
-  // duplicates
-  if (
-    message.includes('E11000 duplicate key error collection') &&
-    message.includes('eMail')
-  ) {
-    payload = 'This E-mail is already in use';
-  }
-  // required keys
-  else if (
-    message.includes('user validation failed') &&
-    message.includes('eMail')
-  ) {
+  // TODO could: add code instead of strings, FE should render message based on this code
+  if (message.includes('E-mail is required')) {
     payload = 'E-mail is required';
-  } else if (
-    message.includes('user validation failed') &&
-    message.includes('username')
-  ) {
+  } else if (message.includes('Username is required')) {
     payload = 'Username is required';
-  } else if (
-    message.includes('user validation failed') &&
-    message.includes('password')
-  ) {
+  } else if (message.includes('Password is required')) {
     payload = 'Password is required';
-  } else if (
-    message === 'Invalid e-mail address' ||
-    'Invalid password, check requirements'
-  ) {
-    payload = message;
-  } else if (message === 'Username is too long') {
-    payload = 'Username is too long';
-  } else if (message === 'Username is too short') {
+  } else if (message.includes('CreatedAt key is required')) {
+    payload = 'CreatedAt key is required';
+  } else if (message.includes('Username is too short')) {
     payload = 'Username is too short';
+  } else if (message.includes('Username is too long')) {
+    payload = 'Username is too long';
+  } else if (message.includes('Password is too short')) {
+    payload = 'Password is too short';
+  } else if (message.includes('duplicate key error') && message.includes('eMail')) {
+    payload = 'This e-mail address was already assigned to other account';
+  } else if (message.includes('Invalid e-mail address')) {
+    payload = 'Invalid e-mail address';
+  } else if (message.includes('Invalid password')) {
+    payload = 'Invalid password';
   }
+
+  console.log('message', message);
   console.log('payload', payload);
   return payload;
 };
 
 export const validateCreateUserDate = (
-  bodyData: Record<string, any>,
+    bodyData: Record<string, any>,
 ): string | null => {
   let payload: string | null = null;
   if (!EmailValidator.validate(bodyData.eMail)) {

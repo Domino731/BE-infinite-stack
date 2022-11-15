@@ -9,13 +9,13 @@ export const UserSchema = new moongose.Schema({
   username: {
     type: String,
     required: [true, 'Username is required'],
-    maxlength: [6, 'Username is too long,'],
+    maxlength: [10, 'Username is too long'],
     minLength: [3, 'Username is too short'],
   },
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [8, 'Password is too short,'],
+    minlength: [8, 'Password is too short'],
   },
   createdAt: {
     type: Date,
