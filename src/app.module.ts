@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './api/users/user.module';
 import config from './config';
-import { UserModule } from './api/user/user.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [MongooseModule.forRoot(config.MONGO), UserModule],
