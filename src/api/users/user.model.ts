@@ -9,11 +9,13 @@ export const UserSchema = new moongose.Schema({
   username: {
     type: String,
     required: [true, 'Username is required'],
+    maxlength: [6, 'Username is too long,'],
+    minLength: [3, 'Username is too short'],
   },
-  // password validation is in ./service.ts
   password: {
     type: String,
     required: [true, 'Password is required'],
+    minlength: [8, 'Password is too short,'],
   },
   createdAt: {
     type: Date,
@@ -29,6 +31,6 @@ export interface UserData {
 }
 
 export class User {
-   eMail: string;
-   password: string;
+  eMail: string;
+  password: string;
 }

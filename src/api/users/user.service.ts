@@ -15,7 +15,6 @@ export class UserService {
   async createUser(data: UserData) {
     const newUser = new this.userModel({ ...data, createdAt: new Date() });
     const result = await newUser.save();
-    console.log(result);
     return result;
   }
 
