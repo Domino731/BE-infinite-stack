@@ -28,6 +28,7 @@ export class UserService {
         }
         const newUser = new this.userModel({...data, createdAt: new Date()});
         const result = await newUser.save();
+        console.log("POST: new user was created successfully");
         return result;
     }
 }
