@@ -3,6 +3,7 @@ import {UserData} from './user.model';
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
 import * as EmailValidator from 'email-validator';
+import {sign} from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
@@ -30,5 +31,15 @@ export class UserService {
         const result = await newUser.save();
         console.log("POST: new user was created successfully");
         return result;
+    }
+
+    /**
+     * create jwt token
+     * @Param id - id needed to create token
+     * */
+    createJWTToken(id: string) {
+        return sign({id}, 'jwt user token', {
+            expiresIn: 3 * 24 * 60 * 60
+        });
     }
 }

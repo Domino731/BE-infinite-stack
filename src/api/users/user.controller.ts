@@ -4,7 +4,7 @@ import {
     Get,
     HttpException,
     HttpStatus,
-    Post,
+    Post, Req,
     Res,
 } from '@nestjs/common';
 import {UserService} from './user.service';
@@ -16,10 +16,12 @@ export class UserController {
     }
 
     @Post()
-    async createNew(@Body() body) {
+    async createNew(@Res() res, @Body() body) {
         try {
             const {username, _id} = await this.userService.createUser(body);
-            return {username, _id};
+            const token = this.userService.createJWTToken(_id as unknown as string);
+            res.cookie('jwt', token, {httpOnly: true})
+            res.status(201).send({username, _id})
         } catch (e) {
             throw new HttpException(
                 handleCreateUserError(e.message),
