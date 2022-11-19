@@ -1,9 +1,10 @@
 import {Injectable} from '@nestjs/common';
-import {UserData} from './user.model';
+import {UserData, UserLoginBody} from './user.model';
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
 import * as EmailValidator from 'email-validator';
 import {sign} from 'jsonwebtoken';
+import bcrypt, {genSalt, hash} from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -27,11 +28,30 @@ export class UserService {
         if (!/[0-9]/.test(password) || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password)) {
             throw new Error('Invalid password')
         }
-        const newUser = new this.userModel({...data, createdAt: new Date()});
+
+        // for security purpose, hash the password before document save
+        const salt: string = await genSalt();
+        console.log(salt);
+        const hashedPassword = await hash(password, salt)
+
+        const newUser = new this.userModel({...data, password: hashedPassword, createdAt: new Date()});
         const result = await newUser.save();
         console.log("POST: new user was created successfully");
         return result;
     }
+
+    async loginUser(data: UserLoginBody) {
+        const {eMail, password} = data;
+
+        // find user by id
+        const user = await this.userModel.findOne({eMail});
+        if (user) {
+
+        } else {
+            throw new Error("Login failed, check password & e-mail")
+        }
+    }
+
 
     /**
      * create jwt token
