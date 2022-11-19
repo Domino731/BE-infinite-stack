@@ -33,19 +33,25 @@ export class UserController {
 
     @Post('/login')
     async login(@Res() res, @Body() body) {
-        // try {
-        //     const {eMail, id} = body;
-        //     const tes =
-        //     const {username, _id} = await this.userService.createUser(body);
-        //     const token = this.userService.createJWTToken(_id as unknown as string);
-        //     res.cookie('jwt', token, {httpOnly: true})
-        //     res.status(201).send({username, _id})
-        // } catch (e) {
-        //     throw new HttpException(
-        //         e.message,
-        //         HttpStatus.BAD_REQUEST,
-        //     );
-        // }
+        try {
+            const {eMail, password} = body;
+            if (eMail && password) {
+                const {username, _id} = await this.userService.loginUser({eMail, password});
+                const token = this.userService.createJWTToken(_id as unknown as string);
+                res.cookie('jwt', token, {httpOnly: true})
+                res.status(200).send({username, _id})
+            } else {
+                throw new Error("Missing login data")
+            }
+        } catch (e) {
+            console.log("/login - failed");
+            console.log("message:", e.message);
+
+            throw new HttpException(
+                e.message,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
     }
 
     @Get('/create')

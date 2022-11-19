@@ -4,7 +4,7 @@ import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
 import * as EmailValidator from 'email-validator';
 import {sign} from 'jsonwebtoken';
-import bcrypt, {genSalt, hash} from "bcrypt";
+import bcrypt, {compare, genSalt, hash} from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -31,24 +31,32 @@ export class UserService {
 
         // for security purpose, hash the password before document save
         const salt: string = await genSalt();
-        console.log(salt);
         const hashedPassword = await hash(password, salt)
 
+        // create new user document and save in db
         const newUser = new this.userModel({...data, password: hashedPassword, createdAt: new Date()});
         const result = await newUser.save();
+
+
         console.log("POST: new user was created successfully");
         return result;
     }
 
     async loginUser(data: UserLoginBody) {
         const {eMail, password} = data;
+        const error: string = "Login failed, check password & e-mail";
 
         // find user by id
         const user = await this.userModel.findOne({eMail});
         if (user) {
-
+            const auth: boolean = await compare(password, user.password);
+            if (auth) {
+                return user;
+            } else {
+                throw new Error(error);
+            }
         } else {
-            throw new Error("Login failed, check password & e-mail")
+            throw new Error(error);
         }
     }
 
