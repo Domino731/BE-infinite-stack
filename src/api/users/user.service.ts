@@ -1,15 +1,13 @@
 import {Injectable} from '@nestjs/common';
-import {UserData, UserLoginBody} from './user.model';
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
-import * as EmailValidator from 'email-validator';
 import {sign} from 'jsonwebtoken';
-import bcrypt, {compare, genSalt, hash} from "bcrypt";
+import {compare, genSalt, hash} from "bcrypt";
+import {UserData, UserLoginBody} from "./types";
+import * as EmailValidator from 'email-validator';
 
 @Injectable()
 export class UserService {
-    private users: UserData[];
-
     constructor(
         @InjectModel('user') private readonly userModel: Model<UserData>,
     ) {
@@ -29,24 +27,25 @@ export class UserService {
             throw new Error('Invalid password')
         }
 
-        // for security purpose, hash the password before document save
+        // for security purpose, hash the password before document save method
         const salt: string = await genSalt();
         const hashedPassword = await hash(password, salt)
 
         // create new user document and save in db
         const newUser = new this.userModel({...data, password: hashedPassword, createdAt: new Date()});
         const result = await newUser.save();
-
-
-        console.log("POST: new user was created successfully");
         return result;
     }
 
+    /**
+     * login the user
+     * @Param data - data needed to log
+     * */
     async loginUser(data: UserLoginBody) {
         const {eMail, password} = data;
         const error: string = "Login failed, check password & e-mail";
 
-        // find user by id
+        // find user by id in users collection
         const user = await this.userModel.findOne({eMail});
         if (user) {
             const auth: boolean = await compare(password, user.password);

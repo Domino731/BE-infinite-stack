@@ -1,5 +1,6 @@
 import * as moongose from 'mongoose';
 
+/** mongo schema for users collection */
 export const UserSchema = new moongose.Schema({
     eMail: {
         type: String,
@@ -23,19 +24,3 @@ export const UserSchema = new moongose.Schema({
         unique: true,
     },
 });
-
-export interface UserData {
-    eMail: string;
-    password: string;
-    username: string;
-}
-
-export interface UserLoginBody {
-    eMail: string;
-    password: string;
-}
-
-export class User {
-    eMail: string;
-    password: string;
-}
