@@ -5,6 +5,7 @@ import {sign} from 'jsonwebtoken';
 import {compare, genSalt, hash} from "bcrypt";
 import {UserData, UserLoginBody} from "./types";
 import * as EmailValidator from 'email-validator';
+import {LOGIN_ERRORS, REGISTER_ERRORS} from "./const";
 
 @Injectable()
 export class UserService {
@@ -21,10 +22,10 @@ export class UserService {
 
         // validate e-mail and password
         if (!EmailValidator.validate(eMail)) {
-            throw new Error('Invalid e-mail address');
+            throw new Error(REGISTER_ERRORS.INVALID_EMAIL);
         }
         if (!/[0-9]/.test(password) || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password)) {
-            throw new Error('Invalid password')
+            throw new Error(REGISTER_ERRORS.INVALID_PASSWORD)
         }
 
         // for security purpose, hash the password before document save method
@@ -43,7 +44,7 @@ export class UserService {
      * */
     async loginUser(data: UserLoginBody) {
         const {eMail, password} = data;
-        const error: string = "Login failed, check password & e-mail";
+        const error: string = LOGIN_ERRORS.LOGIN_ERROR;
 
         // find user by id in users collection
         const user = await this.userModel.findOne({eMail});

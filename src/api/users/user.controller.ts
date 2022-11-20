@@ -1,6 +1,8 @@
 import {Body, Controller, HttpException, HttpStatus, Post, Res} from '@nestjs/common';
 import {UserService} from './user.service';
-import {handleCreateUserError} from './utils';
+import {loginErrorMessage, registerErrorMessage} from './utils';
+import {JWT_COOKIE_NAME, LOGIN_ERRORS} from "./const";
+
 
 // api controller for /users, available routes ->
 // @post /register - create new account
@@ -18,12 +20,13 @@ export class UserController {
             // create new user and set 'jwt' cookie
             const {username, _id} = await this.userService.createUser(body);
             const token = this.userService.createJWTToken(_id as unknown as string);
-            res.cookie('jwt', token, {httpOnly: true});
+
+            res.cookie(JWT_COOKIE_NAME, token, {httpOnly: true});
             res.status(201).send({username, _id});
         } catch (e) {
             // handle errors
             throw new HttpException(
-                handleCreateUserError(e.message),
+                registerErrorMessage(e.message),
                 HttpStatus.BAD_REQUEST,
             );
         }
@@ -39,15 +42,16 @@ export class UserController {
                 // find user with email and check his password, also set 'jwt' cookie
                 const {username, _id} = await this.userService.loginUser({eMail, password});
                 const token = this.userService.createJWTToken(_id as unknown as string);
-                res.cookie('jwt', token, {httpOnly: true});
+
+                res.cookie(JWT_COOKIE_NAME, token, {httpOnly: true});
                 res.status(200).send({username, _id});
             } else {
-                throw new Error("Missing login data")
+                throw new Error(LOGIN_ERRORS.MISSING_DATA);
             }
         } catch (e) {
             // handle error
             throw new HttpException(
-                e.message,
+                loginErrorMessage(e.message),
                 HttpStatus.BAD_REQUEST,
             );
         }

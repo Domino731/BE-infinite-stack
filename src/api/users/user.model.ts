@@ -1,26 +1,27 @@
 import * as moongose from 'mongoose';
+import {REGISTER_ERRORS} from "./const";
 
 /** mongo schema for users collection */
 export const UserSchema = new moongose.Schema({
     eMail: {
         type: String,
-        required: [true, 'E-mail is required'],
+        required: [true, REGISTER_ERRORS.EMAIL_REQUIRED],
         unique: true,
     },
     username: {
         type: String,
-        required: [true, 'Username is required'],
-        maxlength: [10, 'Username is too long'],
-        minLength: [3, 'Username is too short'],
+        required: [true, REGISTER_ERRORS.USERNAME_REQUIRED],
+        maxlength: [20, REGISTER_ERRORS.USERNAME_TOO_LONG],
+        minLength: [3, REGISTER_ERRORS.USERNAME_TOO_SHORT],
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
-        minlength: [8, 'Password is too short'],
+        required: [true, REGISTER_ERRORS.PASSWORD_REQUIRED],
+        minlength: [8, REGISTER_ERRORS.PASSWORD_TOO_SHORT],
     },
     createdAt: {
         type: Date,
-        required: [true, 'CreatedAt key is required'],
+        required: [true, REGISTER_ERRORS.CREATED_AT_REQUIRED],
         unique: true,
     },
 });
