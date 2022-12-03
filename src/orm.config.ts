@@ -6,7 +6,7 @@ export const config: TypeOrmModuleOptions = {
     port: 5432,
     username: 'postgres',
     password: APP_CONFIG.POSTGRES_PASSWORD,
-    host: '172.0.0.1',
+    host: 'localhost',
     database: 'Infinite_stack',
     // creating new key in table automatically, for example if you have table called companies(id, name), you can easily add year key
     synchronize: true,

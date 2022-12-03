@@ -8,7 +8,7 @@ import {config as ORM_CONFIG} from './orm.config'
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 @Module({
-    imports: [MongooseModule.forRoot(config.MONGO), UserModule, TypeOrmModule.forRoot(ORM_CONFIG)],
+    imports: [TypeOrmModule.forRoot(ORM_CONFIG), MongooseModule.forRoot(config.MONGO), UserModule],
     controllers: [AppController],
     providers: [AppService],
 })
