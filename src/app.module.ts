@@ -6,9 +6,10 @@ import config from './config';
 import {MongooseModule} from '@nestjs/mongoose';
 import {config as ORM_CONFIG} from './orm.config'
 import {TypeOrmModule} from "@nestjs/typeorm";
+import {ProjectModule} from "./api/project/project.module";
 
 @Module({
-    imports: [TypeOrmModule.forRoot(ORM_CONFIG), MongooseModule.forRoot(config.MONGO), UserModule],
+    imports: [TypeOrmModule.forRoot(ORM_CONFIG), MongooseModule.forRoot(config.MONGO), UserModule, ProjectModule],
     controllers: [AppController],
     providers: [AppService],
 })
