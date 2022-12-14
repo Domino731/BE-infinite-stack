@@ -24,4 +24,16 @@ export const UserSchema = new moongose.Schema({
         required: [true, REGISTER_ERRORS.CREATED_AT_REQUIRED],
         unique: true,
     },
+    specializationArea: {
+        type: String,
+        required: [true, REGISTER_ERRORS.SPECIALIZATION_AREA_REQUIRED],
+    },
+    specialization: {
+        type: String,
+        required: [true, REGISTER_ERRORS.SPECIALIZATION_REQUIRED],
+    },
+    uid: {
+        type: String,
+        required: true,
+    },
 });

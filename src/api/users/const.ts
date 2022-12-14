@@ -19,6 +19,8 @@ export enum REGISTER_ERRORS {
     PASSWORD_TOO_SHORT = 'Password is too short',
     INVALID_EMAIL = 'Invalid e-mail address',
     INVALID_PASSWORD = 'Invalid password',
+    SPECIALIZATION_AREA_REQUIRED = 'Specialization area is required',
+    SPECIALIZATION_REQUIRED = 'Specialization is required',
 }
 
 export const JWT_COOKIE_NAME: string = 'jwt';

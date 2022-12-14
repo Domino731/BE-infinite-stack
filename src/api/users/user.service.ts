@@ -6,6 +6,7 @@ import {compare, genSalt, hash} from "bcrypt";
 import {UserData, UserLoginBody} from "./types";
 import * as EmailValidator from 'email-validator';
 import {LOGIN_ERRORS, REGISTER_ERRORS} from "./const";
+import {nanoid} from 'nanoid'
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,13 @@ export class UserService {
         const hashedPassword = await hash(password, salt)
 
         // create new user document and save in db
-        const newUser = new this.userModel({...data, password: hashedPassword, createdAt: new Date()});
+        const newUser = new this.userModel({
+            ...data,
+            password: hashedPassword,
+            createdAt: new Date(),
+            uid: nanoid(6)
+        });
+
         const result = await newUser.save();
         return result;
     }
