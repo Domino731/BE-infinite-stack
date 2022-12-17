@@ -1,4 +1,4 @@
-import {Body, Controller, HttpException, HttpStatus, Post, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpException, HttpStatus, Param, Post, Res} from '@nestjs/common';
 import {UserService} from './user.service';
 import {loginErrorMessage, registerErrorMessage} from './utils';
 import {JWT_COOKIE_NAME, LOGIN_ERRORS} from "./const";
@@ -55,6 +55,20 @@ export class UserController {
                 loginErrorMessage(e.message),
                 HttpStatus.BAD_REQUEST,
             );
+        }
+    }
+
+    // get user data by uid
+    @Get('/:uid')
+    async getUser(@Param('uid') uid, @Res() res) {
+        try {
+            const user = await this.userService.findUserByUid(Number(uid));
+            res.status(200).send({user});
+        } catch (e) {
+            console.log('error');
+            console.log('/user/:uid');
+            console.log(e.message)
+            throw new HttpException('ERROR', HttpStatus.NOT_FOUND)
         }
     }
 }

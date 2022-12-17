@@ -5,7 +5,7 @@ import {sign} from 'jsonwebtoken';
 import {compare, genSalt, hash} from "bcrypt";
 import {UserData, UserLoginBody} from "./types";
 import * as EmailValidator from 'email-validator';
-import {LOGIN_ERRORS, REGISTER_ERRORS} from "./const";
+import {COMMON_USER_ERRORS, LOGIN_ERRORS, REGISTER_ERRORS} from "./const";
 
 @Injectable()
 export class UserService {
@@ -75,5 +75,20 @@ export class UserService {
         return sign({id}, 'jwt user token', {
             expiresIn: 3 * 24 * 60 * 60
         });
+    }
+
+    /**
+     * find user by uid
+     * @Param uid - uid of user
+     * */
+    async findUserByUid(uid: number) {
+        // find user by id in users collection
+        const user = await this.userModel.findOne({uid});
+        if (user) {
+            const {username, specializationArea, specialization} = user;
+            return {username, specializationArea, specialization};
+        } else {
+            throw new Error(COMMON_USER_ERRORS.NOT_FOUND);
+        }
     }
 }

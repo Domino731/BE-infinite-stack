@@ -23,4 +23,8 @@ export enum REGISTER_ERRORS {
     SPECIALIZATION_REQUIRED = 'Specialization is required',
 }
 
+export enum COMMON_USER_ERRORS {
+    NOT_FOUND = 'User not found'
+}
+
 export const JWT_COOKIE_NAME: string = 'jwt';
