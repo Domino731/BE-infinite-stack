@@ -14,7 +14,7 @@ export class UserController {
     }
 
     // creating new user in mongoDB
-    @Post('register')
+    @Post('/register')
     async createNew(@Res() res, @Body() body) {
         try {
             // create new user and set 'jwt' cookie
@@ -24,6 +24,7 @@ export class UserController {
             res.cookie(JWT_COOKIE_NAME, token, {httpOnly: true});
             res.status(201).send({username, _id});
         } catch (e) {
+            console.log('error', e)
             // handle errors
             throw new HttpException(
                 registerErrorMessage(e.message),

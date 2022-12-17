@@ -33,7 +33,9 @@ export const UserSchema = new moongose.Schema({
         required: [true, REGISTER_ERRORS.SPECIALIZATION_REQUIRED],
     },
     uid: {
-        type: String,
+        type: Number,
+        maxlength: 6,
+        minLength: 6,
         required: true,
     },
 });
