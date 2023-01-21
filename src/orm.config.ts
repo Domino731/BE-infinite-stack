@@ -8,7 +8,7 @@ export const config: TypeOrmModuleOptions = {
     password: APP_CONFIG.POSTGRES_PASSWORD,
     host: 'localhost',
     database: 'Infinite_stack',
-    // creating new key in table automatically, for example if you have table called companies(id, name), you can easily add year key
+    // creating new key in table automatically, for example if you have table called companies (id, name), you can easily add year key
     synchronize: true,
     entities: ['dist/**/*.entity{.js, .ts}']
 

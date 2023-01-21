@@ -10,7 +10,7 @@ import {ProjectModule} from "./api/project/project.module";
 
 @Module({
     imports: [
-        // TypeOrmModule.forRoot(ORM_CONFIG),
+        TypeOrmModule.forRoot(ORM_CONFIG),
         MongooseModule.forRoot(config.MONGO),
         UserModule,
         ProjectModule
