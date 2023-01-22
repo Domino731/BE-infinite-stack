@@ -1,4 +1,4 @@
 export interface ProjectInterface {
-    id: string;
+    id: number;
     name: string;
 }
