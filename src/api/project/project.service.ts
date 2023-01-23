@@ -20,7 +20,8 @@ export class ProjectService {
         return req;
     }
 
-    async findProjectById(id: string) {
-        const req = await this.projectPostRepository.getId(id)
+    async findProjectById(id: number) {
+        const req = await this.projectPostRepository.findOneBy({id})
+        return req;
     }
 }
