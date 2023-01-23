@@ -19,4 +19,8 @@ export class ProjectService {
         const req = await this.projectPostRepository.save(project);
         return req;
     }
+
+    async findProjectById(id: string) {
+        const req = await this.projectPostRepository.getId(id)
+    }
 }
